@@ -100,79 +100,78 @@
                 </tr>
               </thead>
               <tbody id="cart-tbody">
+@foreach($carts as $cart)
+    @if($cart->product)
+    <tr class="cart-row" id="cart-row-{{ $cart->id }}">
 
-                @foreach($carts as $cart)
-                <tr class="cart-row" id="cart-row-{{ $cart->id }}">
+        {{-- صورة --}}
+        <td class="image">
+            <img
+              src="{{ $cart->product->images && $cart->product->images->count() > 0
+                      ? asset('storage/' . $cart->product->images->first()->path)
+                      : asset('storage/Product/Noimage.webp') }}"
+              alt="{{ $cart->product->name }}"
+              style="width:70px;height:70px;object-fit:cover;border-radius:6px;">
+        </td>
 
-                  {{-- صورة --}}
-                  <td class="image">
-                    <img
-                      src="{{ $cart->product->images
-                              ? asset('storage/' . $cart->product->images->path)
-                              : asset('storage/Product/Noimage.webp') }}"
-                      alt="{{ $cart->product->name }}"
-                      style="width:70px;height:70px;object-fit:cover;border-radius:6px;">
-                  </td>
+        {{-- اسم المنتج --}}
+        <td class="name">
+            <a href="{{ route('showproduct', $cart->product->slug) }}">
+                {{ $cart->product->name }}
+            </a>
+            <span style="display:block;font-size:12px;color:#888;">
+                {{ $cart->product->category->name ?? '' }}
+            </span>
+        </td>
 
-                  {{-- اسم المنتج --}}
-                  <td class="name">
-                    <a href="{{ route('showproduct', $cart->product->slug) }}">
-                      {{ $cart->product->name }}
-                    </a>
-                    <span style="display:block;font-size:12px;color:#888;">
-                      {{ $cart->product->category->name ?? '' }}
-                    </span>
-                  </td>
+        {{-- السعر --}}
+        <td class="price">
+            <span>${{ number_format($cart->product->price, 2) }}</span>
+            @if($cart->product->compare_price)
+              <del style="font-size:12px;color:#aaa;">
+                  ${{ number_format($cart->product->compare_price, 2) }}
+              </del>
+            @endif
+        </td>
 
-                  {{-- السعر --}}
-                  <td class="price">
-                    <span>${{ number_format($cart->product->price, 2) }}</span>
-                    @if($cart->product->compare_price)
-                      <del style="font-size:12px;color:#aaa;">
-                        ${{ number_format($cart->product->compare_price, 2) }}
-                      </del>
-                    @endif
-                  </td>
+        <td class="quantity">
+            <input
+              type="number"
+              class="qty-input"
+              id="qty-{{ $cart->id }}"
+              value="{{ $cart->quantity }}"
+              min="1"
+              data-id="{{ $cart->id }}"
+              data-old="{{ $cart->quantity }}"
+              data-price="{{ $cart->product->price }}"
+            >
+        </td>
 
-                  {{-- ✅ الكمية يدوي — debounce تلقائي --}}
-                  <td class="quantity">
-                    <input
-                      type="number"
-                      class="qty-input"
-                      id="qty-{{ $cart->id }}"
-                      value="{{ $cart->quantity }}"
-                      min="1"
-                      data-id="{{ $cart->id }}"
-                      data-old="{{ $cart->quantity }}"
-                      data-price="{{ $cart->product->price }}"
-                    >
-                  </td>
+        {{-- إجمالي الصف --}}
+        <td class="total-price" id="row-total-{{ $cart->id }}">
+            ${{ number_format($cart->product->price * $cart->quantity, 2) }}
+        </td>
 
-                  {{-- إجمالي الصف --}}
-                  <td class="total-price" id="row-total-{{ $cart->id }}">
-                    ${{ number_format($cart->product->price * $cart->quantity, 2) }}
-                  </td>
+        {{-- حذف --}}
+        <td class="action">
+            <form class="form-delete"
+                  action="{{ route('cart.destroy', $cart->id) }}"
+                  method="POST"
+                  data-id="{{ $cart->id }}">
+                @csrf
+                @method('DELETE')
+                <button type="submit"
+                        class="remove"
+                        style="background:none;border:none;cursor:pointer;"
+                        title="Remove">
+                    <i class="lni lni-close"></i>
+                </button>
+            </form>
+        </td>
 
-                  {{-- حذف --}}
-                  <td class="action">
-                    <form class="form-delete"
-                          action="{{ route('cart.destroy', $cart->id) }}"
-                          method="POST"
-                          data-id="{{ $cart->id }}">
-                      @csrf
-                      @method('DELETE')
-                      <button type="submit"
-                              class="remove"
-                              style="background:none;border:none;cursor:pointer;"
-                              title="Remove">
-                        <i class="lni lni-close"></i>
-                      </button>
-                    </form>
-                  </td>
-
-                </tr>
-                @endforeach
-
+    </tr>
+    @endif
+@endforeach
               </tbody>
             </table>
           </div>

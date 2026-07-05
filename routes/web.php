@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Front\CartController;
 use App\Http\Controllers\Front\CheckoutController;
 use App\Http\Controllers\Front\HomeController;
+use App\Http\Controllers\Front\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
@@ -59,6 +60,9 @@ Route::get('/checkout', [CheckoutController::class, 'create'])->name('checkout.c
 Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 Route::resource('roles',RoleController::class);
 Route::resource('admin',AdminController::class);
+Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
+Route::post('pay',[\App\Http\Controllers\Front\PaymentController::class,'payment'])->name('pay');
+Route::get('createpay',[PaymentController::class,'createpay'])->name('createpay');
 Route::post('/lang/switch', function () {
     
   $locale    = request('locale', 'en');
@@ -69,4 +73,8 @@ Route::post('/lang/switch', function () {
 
     return redirect()->back();
 })->name('lang.switch');
+Route::get('test',function ()
+{
+  return view('Front.Payment');
+});
 require __DIR__.'/auth.php';
