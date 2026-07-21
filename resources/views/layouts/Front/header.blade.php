@@ -125,18 +125,18 @@
                                         <span>{{ $cartCount }}</span>
                                         <a href="{{ route('cart.index') }}">View Cart</a>
                                     </div>
-
+{{-- 
                                     @if ($cartCount != 0)
                                         @foreach ($cartItems as $cart)
                                             @if($cart->product)
                                                 <li>
                                                     {{-- زر الحذف --}}
-                                                    <a href="javascript:void(0)" class="remove">
+                                                    {{-- <a href="javascript:void(0)" class="remove">
                                                         <i class="lni lni-close"></i>
                                                     </a>
 
                                                     {{-- صورة المنتج --}}
-                                                    @if($cart->product->images && $cart->product->images->count() > 0)
+                                                    {{-- @if($cart->product->images && $cart->product->images->count() > 0)
                                                         <div class="cart-img-head">
                                                             <a class="cart-img" href="{{ route('showproduct', $cart->product->slug) }}">
                                                                 <img
@@ -154,10 +154,10 @@
                                                                     style="width:70px; height:70px; object-fit:cover;">
                                                             </a>
                                                         </div>
-                                                    @endif
+                                                    @endif --}}
 
                                                     {{-- بيانات المنتج --}}
-                                                    <div class="content">
+                                                    {{-- <div class="content">
                                                         <h4>
                                                             <a href="{{ route('showproduct', $cart->product->slug) }}">
                                                                 {{ $cart->product->name }}
@@ -169,11 +169,11 @@
                                                                 ${{ number_format($cart->product->price, 2) }}
                                                             </span>
                                                         </p>
-                                                    </div>
-                                                </li>
+                                                    </div> --}}
+                                                {{-- </li>
                                             @endif
                                         @endforeach
-                                    @endif
+                                    @endif  --}}
 
                                     <div class="bottom">
                                         <div class="total">

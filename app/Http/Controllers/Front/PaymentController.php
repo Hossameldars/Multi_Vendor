@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Front;
 
 use App\Facades\Cart;
 use App\Http\Controllers\Controller;
+use App\Models\Order;
 use App\Models\Payment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Stripe\StripeClient;
 
 
@@ -83,9 +85,9 @@ public function createpay()
         );
 
         if ($session->payment_status == 'paid') {
-
+                $order = Order::where('user_id', Auth::id())->latest()->first();
             Payment::create([
-                'order_id' => 1, 
+                'order_id' => $order->id, 
                 'amount' => $session->amount_total / 100,
                 'currency' => strtoupper($session->currency),
                 'method' => 'stripe',
@@ -93,10 +95,10 @@ public function createpay()
                 'transaction_id' => $session->payment_intent,
                 'transaction_data' => json_encode($session),
             ]);
-
+     Cart::empyt();
             return "Payment Successful";
         }
-
+  
         return "Payment Failed";
     }
 }

@@ -12,8 +12,8 @@ class CartModelRepostory implements CartRepostory
 {
     public function get()
     {
-          $cookie_id = get_cart_id();
-         return Cart::where('cookie_id', $cookie_id)->get();
+        //  $cookie_id = get_cart_id();
+         return Cart::where('cookie_id', $this->getcookie())->get();
     }
 
     public function add(Product $product, $quantity = 1) 

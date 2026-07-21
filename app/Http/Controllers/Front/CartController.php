@@ -16,7 +16,7 @@ class CartController extends Controller
     {
         $carts    = $this->repository->get();
         $subtotal = $this->repository->total();
-
+     
         return view('Front.cart', compact('carts', 'subtotal'));
     }                                                                       
            

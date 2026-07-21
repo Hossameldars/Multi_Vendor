@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('role_admins', function (Blueprint $table) {
+        Schema::create('deliveries', function (Blueprint $table) {
             $table->id();
-              $table->foreignId('admin_id')->constrained('admins')->cascadeOnDelete();
-            $table->foreignId('role_id')->constrained('roles')->cascadeOnDelete();
-            $table->unique(['admin_id', 'role_id']);
+            $table->foreignId('order_id')->constrained('orders')->cascadeOnDelete();
+            $table->point('current_location')->nullable();
+            $table->enum('status',['pending','in_progress','delivered'])->default('pending');
             $table->timestamps();
-        }); 
+        });
     }
 
     /**
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('role_admins');
+        Schema::dropIfExists('deliveries');
     }
 };

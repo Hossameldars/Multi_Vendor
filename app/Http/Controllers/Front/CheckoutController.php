@@ -19,12 +19,12 @@ class CheckoutController extends Controller
    {
         $carts    = Cart::get();
         $subtotal = Cart::total();
-             dd($carts);
-        // if ($carts->isEmpty()) {
-        //     return redirect()->route('cart.index')->with('error', 'السلة فارغة');
-        // }
+          //   dd($carts);
+        if ($carts->isEmpty()) {
+            return redirect()->route('cart.index')->with('error', 'السلة فارغة');
+        }
   
-    //  return view('Front.checkout', compact('carts', 'subtotal'));
+     return view('Front.checkout', compact('carts', 'subtotal'));
    }  
     public function store(Request $request)
 {
@@ -106,7 +106,7 @@ class CheckoutController extends Controller
         //Cart::empyt();
         $storeid= $order->user->store_id;
         $users=User::where('store_id',$storeid)->get();
-        Notification::send($users, new OrderShipped($order));
+      //  Notification::send($users, new OrderShipped($order));
     });
 
     return redirect()
